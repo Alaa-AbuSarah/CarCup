@@ -30,8 +30,8 @@ namespace CarCup
             _Data.breakForce = EditorGUILayout.Slider("Break Force", _Data.breakForce, 1500f, 10000f);
             _Data.maxSpeed = EditorGUILayout.Slider("Max Speed", _Data.maxSpeed, 0f, 500f);
 
-            Texture2D angleSteering = EditorHelper.GetTexture2DFromPath("Assets/Car Tool/Demo Assets/Icons/Steering.png");
-            Texture2D angleCursor = EditorHelper.GetTexture2DFromPath("Assets/Car Tool/Demo Assets/Icons/Angle Cursor.png");
+            Texture2D angleSteering = EditorHelper.GetTexture2DFromPath("Assets/Car Cup/Demo Assets/Icons/Steering.png");
+            Texture2D angleCursor = EditorHelper.GetTexture2DFromPath("Assets/Car Cup/Demo Assets/Icons/Angle Cursor.png");
             _Data.maxSteerAngle = EditorHelper.GuiAngle(new Rect(Screen.width / 2 - 40, 150, 128, 128), _Data.maxSteerAngle, 1f, 90f, angleSteering, angleCursor, "Max Steer Angle", true);
 
             EditorGUILayout.Space(170);

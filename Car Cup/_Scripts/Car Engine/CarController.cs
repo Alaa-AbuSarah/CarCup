@@ -194,6 +194,8 @@ namespace CarCup
 
             if (speedText != null)
                 speedText.UpdatText(speed.ToString("F2"));
+
+            if (verticalInput == 0 && horizontalInput == 0) isBreaking = true;
         }
 
         private void HandleMotor()
@@ -202,15 +204,15 @@ namespace CarCup
 
             if (speed < maxSpeed)
             {
-                frontLeftWheelCollider.motorTorque = verticalInput * motorForce + (motorForce - motorForce * acceleration.Evaluate(speedRatio));
-                frontRightWheelCollider.motorTorque = verticalInput * motorForce + (motorForce - motorForce * acceleration.Evaluate(speedRatio));
+                frontLeftWheelCollider.motorTorque = verticalInput * (motorForce + (motorForce - motorForce * acceleration.Evaluate(speedRatio)));
+                frontRightWheelCollider.motorTorque = verticalInput * (motorForce + (motorForce - motorForce * acceleration.Evaluate(speedRatio)));
             }
             else
             {
                 frontLeftWheelCollider.motorTorque = -verticalInput * motorForce;
                 frontRightWheelCollider.motorTorque = -verticalInput * motorForce;
             }
-            currentbreakForce = isBreaking ? breakForce : (verticalInput == 0) ? breakForce / 4 : 0;
+            currentbreakForce = isBreaking ? breakForce : 0;
             ApplyBreaking();
         }
 
