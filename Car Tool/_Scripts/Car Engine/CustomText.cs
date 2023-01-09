@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace CarTools
+namespace CarCup
 {
     [RequireComponent(typeof(Text))]
     public class CustomText : MonoBehaviour

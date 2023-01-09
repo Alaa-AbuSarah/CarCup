@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace CarTools
+namespace CarCup
 {
     public class CarController : MonoBehaviour
     {
@@ -34,6 +34,7 @@ namespace CarTools
         private float maxSteerAngle;
         private float maxSpeed;
         private AnimationCurve handlingMovement;
+        private AnimationCurve acceleration;
 
         private float horizontalInput;
         private float verticalInput;
@@ -58,7 +59,46 @@ namespace CarTools
             maxSteerAngle = _data.maxSteerAngle;
             maxSpeed = _data.maxSpeed;
             handlingMovement = _data.handlingMovement;
+            acceleration = _data.acceleration;
             rigidbody.mass = _data.mass;
+
+            ApplyDataToWheelCollider(frontLeftWheelCollider, _data.fl_wheelColliderSettings);
+            ApplyDataToWheelCollider(frontRightWheelCollider, _data.fr_wheelColliderSettings);
+            ApplyDataToWheelCollider(rearLeftWheelCollider, _data.rl_wheelColliderSettings);
+            ApplyDataToWheelCollider(rearRightWheelCollider, _data.rr_wheelColliderSettings);
+        }
+
+        private void ApplyDataToWheelCollider(WheelCollider collider, WheelColliderSettings settings)
+        {
+            JointSpring jointSpring = new JointSpring();
+            WheelFrictionCurve f_wheelFrictionCurve = new WheelFrictionCurve();
+            WheelFrictionCurve s_wheelFrictionCurve = new WheelFrictionCurve();
+
+            collider.mass = settings.mass;
+            collider.radius = settings.radius;
+            collider.wheelDampingRate = settings.wheelDampingRate;
+            collider.suspensionDistance = settings.suspensionDistance;
+            collider.forceAppPointDistance = settings.forceAppPointDistance;
+            collider.center = settings.center;
+
+            jointSpring.spring = settings.spring;
+            jointSpring.damper = settings.damper;
+            jointSpring.targetPosition = settings.targetPosition;
+            collider.suspensionSpring = jointSpring;
+
+            f_wheelFrictionCurve.extremumSlip = settings.f_extremumSlip;
+            f_wheelFrictionCurve.extremumValue = settings.f_extremumValue;
+            f_wheelFrictionCurve.asymptoteSlip = settings.f_asymptoteSlip;
+            f_wheelFrictionCurve.asymptoteValue = settings.f_asymptoteValue;
+            f_wheelFrictionCurve.stiffness = settings.f_stiffness;
+            collider.forwardFriction = f_wheelFrictionCurve;
+
+            s_wheelFrictionCurve.extremumSlip = settings.s_extremumSlip;
+            s_wheelFrictionCurve.extremumValue = settings.s_extremumValue;
+            s_wheelFrictionCurve.asymptoteSlip = settings.s_asymptoteSlip;
+            s_wheelFrictionCurve.asymptoteValue = settings.s_asymptoteValue;
+            s_wheelFrictionCurve.stiffness = settings.s_stiffness;
+            collider.sidewaysFriction = s_wheelFrictionCurve;
         }
 
         private void Start()
@@ -158,10 +198,12 @@ namespace CarTools
 
         private void HandleMotor()
         {
+            float speedRatio = speed / maxSpeed;
+
             if (speed < maxSpeed)
             {
-                frontLeftWheelCollider.motorTorque = verticalInput * motorForce;
-                frontRightWheelCollider.motorTorque = verticalInput * motorForce;
+                frontLeftWheelCollider.motorTorque = verticalInput * motorForce + (motorForce - motorForce * acceleration.Evaluate(speedRatio));
+                frontRightWheelCollider.motorTorque = verticalInput * motorForce + (motorForce - motorForce * acceleration.Evaluate(speedRatio));
             }
             else
             {

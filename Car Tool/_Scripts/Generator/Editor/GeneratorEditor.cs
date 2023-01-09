@@ -3,7 +3,7 @@
 using UnityEngine;
 using UnityEditor;
 
-namespace CarTools
+namespace CarCup
 {
     [CustomEditor(typeof(Generator), true)]
     public class GeneratorEditor : Editor

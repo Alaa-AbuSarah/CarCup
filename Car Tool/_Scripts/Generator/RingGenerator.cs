@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace CarTools
+namespace CarCup
 {
     public class RingGenerator : Generator
     {

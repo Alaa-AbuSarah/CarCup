@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 
-namespace CarTools
+namespace CarCup
 {
     public class MenuItems : MonoBehaviour
     {

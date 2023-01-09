@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 
-namespace CarTools
+namespace CarCup
 {
     public static class EditorHelper
     {
@@ -46,6 +46,63 @@ namespace CarTools
             if (value.stiffness < 0) value.stiffness = 0;
 
             return value;
+        }
+        //
+        // Summary:
+        //     Make a wheel collider settings field.
+        //
+        // Parameters:
+        //   wheelFrictionCurve:
+        //     The wheel collider settings shown in the field.
+        //
+        //   label:
+        //     Optional label in top of the field.
+        //
+        // Returns:
+        //     The wheel collider settings updated by the user.
+        public static WheelColliderSettings WheelColliderSettingsField(WheelColliderSettings wheelColliderSettings, string label = " ")
+        {
+            WheelColliderSettings _settings = wheelColliderSettings;
+
+            GuiLine();
+            EditorGUILayout.LabelField(label, LableStyle0004());
+            GuiLine();
+            EditorGUILayout.Space();
+
+            _settings.mass = EditorGUILayout.Slider("Mass", _settings.mass, 0.0001f, 1000f);
+            _settings.radius = EditorGUILayout.Slider("Radius", _settings.radius, 0f, 100f);
+            _settings.wheelDampingRate = EditorGUILayout.Slider("Wheel Damping Rate", _settings.wheelDampingRate, 0.0001f, 10f);
+            _settings.suspensionDistance = EditorGUILayout.Slider("Suspension Distance", _settings.suspensionDistance, 0, 10f);
+            _settings.forceAppPointDistance = EditorGUILayout.Slider("Force App Point Distance", _settings.forceAppPointDistance, -10f, 10f);
+
+            EditorGUILayout.Space();
+
+            _settings.center = EditorGUILayout.Vector3Field("Center", _settings.center);
+
+            EditorGUILayout.Space();
+
+            EditorGUILayout.LabelField("Suspension Spring", LableStyle0002());
+            _settings.spring = EditorGUILayout.Slider("Spring", _settings.spring, 0f, 1000000f);
+            _settings.damper = EditorGUILayout.Slider("Damper", _settings.damper, 0f, 1000000f);
+            _settings.targetPosition = EditorGUILayout.Slider("Target Position", _settings.targetPosition, 0f, 10f);
+
+            EditorGUILayout.Space();
+            EditorGUILayout.LabelField("Forward Friction", LableStyle0002());
+            _settings.f_extremumSlip = EditorGUILayout.Slider("Fxtremum Slip", _settings.f_extremumSlip, 0.001f, 1000f);
+            _settings.f_extremumValue = EditorGUILayout.Slider("ExtremumValue", _settings.f_extremumValue, 0.001f, 1000f);
+            _settings.f_asymptoteSlip = EditorGUILayout.Slider("AsymptoteSlip", _settings.f_asymptoteSlip, 0.001f, 1000f);
+            _settings.f_asymptoteValue = EditorGUILayout.Slider("AsymptoteValue", _settings.f_asymptoteValue, 0.001f, 1000f);
+            _settings.f_stiffness = EditorGUILayout.Slider("Stiffness", _settings.f_stiffness, 0f, 1000f);
+
+            EditorGUILayout.Space();
+            EditorGUILayout.LabelField("Sideways Friction", LableStyle0002());
+            _settings.s_extremumSlip = EditorGUILayout.Slider("Fxtremum Slip", _settings.s_extremumSlip, 0.001f, 1000f);
+            _settings.s_extremumValue = EditorGUILayout.Slider("ExtremumValue", _settings.s_extremumValue, 0.001f, 1000f);
+            _settings.s_asymptoteSlip = EditorGUILayout.Slider("AsymptoteSlip", _settings.s_asymptoteSlip, 0.001f, 1000f);
+            _settings.s_asymptoteValue = EditorGUILayout.Slider("AsymptoteValue", _settings.s_asymptoteValue, 0.001f, 1000f);
+            _settings.s_stiffness = EditorGUILayout.Slider("Stiffness", _settings.s_stiffness, 0f, 1000f);
+
+            return _settings;
         }
         //
         // Summary:

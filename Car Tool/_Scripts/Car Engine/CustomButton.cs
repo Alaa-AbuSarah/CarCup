@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-namespace CarTools
+namespace CarCup
 {
     [RequireComponent(typeof(Image))]
     public class CustomButton : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
