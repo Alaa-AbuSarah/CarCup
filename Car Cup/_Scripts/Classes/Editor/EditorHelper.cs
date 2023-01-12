@@ -172,6 +172,46 @@ namespace CarCup
 
             return _value;
         }
+        public static MotorSuond MotorSuondField(MotorSuond motorSuond, string label = " ")
+        {
+            MotorSuond _suond = motorSuond;
+
+            GuiLine();
+            EditorGUILayout.LabelField(label, LableStyle0005());
+            GuiLine();
+
+            EditorGUILayout.BeginHorizontal();
+            EditorGUILayout.LabelField("Idle Sound");
+            _suond.idle = EditorGUILayout.ObjectField(_suond.idle, typeof(AudioClip), false) as AudioClip;
+            EditorGUILayout.EndHorizontal();
+            _suond.idleVolume = EditorGUILayout.Slider(_suond.idleVolume, 0, 1);
+
+            EditorGUILayout.Space();
+
+            EditorGUILayout.BeginHorizontal();
+            EditorGUILayout.LabelField("Low Sound");
+            _suond.low = EditorGUILayout.ObjectField(_suond.low, typeof(AudioClip), false) as AudioClip;
+            EditorGUILayout.EndHorizontal();
+            _suond.lowVolume = EditorGUILayout.Slider(_suond.lowVolume, 0, 1);
+
+            EditorGUILayout.Space();
+
+            EditorGUILayout.BeginHorizontal();
+            EditorGUILayout.LabelField("Mid Sound");
+            _suond.mid = EditorGUILayout.ObjectField(_suond.mid, typeof(AudioClip), false) as AudioClip;
+            EditorGUILayout.EndHorizontal();
+            _suond.midVolume = EditorGUILayout.Slider(_suond.midVolume, 0, 1);
+
+            EditorGUILayout.Space();
+
+            EditorGUILayout.BeginHorizontal();
+            EditorGUILayout.LabelField("High Sound");
+            _suond.high = EditorGUILayout.ObjectField(_suond.high, typeof(AudioClip), false) as AudioClip;
+            EditorGUILayout.EndHorizontal();
+            _suond.highVolume = EditorGUILayout.Slider(_suond.highVolume, 0, 1);
+
+            return _suond;
+        }
         public static GUIStyle LableStyle0001 => new GUIStyle(GUI.skin.label) { alignment = TextAnchor.MiddleCenter };
         public static GUIStyle LableStyle0002()
         {

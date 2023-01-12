@@ -11,6 +11,16 @@ namespace CarCup
 
         [Space(25)]
 
+        [Header("Componets")]
+        [Space]
+
+        [SerializeField] private AudioSource motorSuond;
+
+        [Space(25)]
+
+        [Header("Wheels")]
+        [Space]
+
         [SerializeField] private Transform frontLeftWheelTransform;
         [SerializeField] private WheelCollider frontLeftWheelCollider;
 
@@ -143,6 +153,7 @@ namespace CarCup
             HandleSteering();
             UpdateWheels();
             HandlingMovement();
+            HandlingComponets();
         }
 
         private void HandlingMovement()
@@ -246,6 +257,48 @@ namespace CarCup
             wheelCollider.GetWorldPose(out pos, out rot);
             wheelTransform.rotation = rot;
             wheelTransform.position = pos;
+        }
+
+        private void HandlingComponets()
+        {
+            if (_data.motorSuond.active) MotorSuond();
+        }
+
+        private void MotorSuond()
+        {
+            if (!_data.motorSuond.active) return;
+
+            float speedRatio = speed / maxSpeed;
+            AudioClip clip = null;
+            float volume = 0f;
+
+            switch (speedRatio)
+            {
+                case < 0.01f:
+                    //Idle
+                    if (_data.motorSuond.idle != null) clip = _data.motorSuond.idle;
+                    volume = _data.motorSuond.idleVolume;
+                    break;
+                case < 0.3f://Low Driving
+                    if (_data.motorSuond.low != null) clip = _data.motorSuond.low;
+                    volume = _data.motorSuond.lowVolume;
+                    break;
+                case < 0.6f://Mid Driving
+                    if (_data.motorSuond.mid != null) clip = _data.motorSuond.mid;
+                    volume = _data.motorSuond.midVolume;
+                    break;
+                case < 1://High Driving
+                    if (_data.motorSuond.high != null) clip = _data.motorSuond.high;
+                    volume = _data.motorSuond.highVolume;
+                    break;
+            }
+
+            if (motorSuond.clip != clip && clip != null)
+            {
+                motorSuond.clip = clip;
+                motorSuond.Play();
+            }
+            motorSuond.volume = Mathf.Lerp(motorSuond.volume, volume, Time.deltaTime);
         }
     }
 }

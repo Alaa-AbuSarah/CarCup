@@ -7,10 +7,10 @@ namespace CarCup
 {
     public class CameraFollow : MonoBehaviour
     {
-        [SerializeField] private Vector3 offset = new Vector3(2, 3, -5);
+        [SerializeField] private Vector3 offset = new Vector3(0, 4, -5);
         [SerializeField] private Transform target;
         [SerializeField] private float translateSpeed = 10f;
-        [SerializeField] private float rotationSpeed = 12f;
+        [SerializeField] private float rotationSpeed = 14f;
 
         private void FixedUpdate()
         {

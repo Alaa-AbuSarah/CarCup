@@ -13,7 +13,7 @@ namespace CarCup
         [MenuItem("GameObject/Car Engine/Car", false, 1)]
         static void CreateNewCar()
         {
-            GameObject car = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Car Tool/Prefab/Car.prefab");
+            GameObject car = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Car Cup/Prefab/Car.prefab");
             GameObject newCar = Instantiate(car, Vector3.zero, Quaternion.Euler(Vector3.zero));
             newCar.name = "Wonderful car";
             Undo.RegisterCreatedObjectUndo(newCar, "Create " + newCar.name);
@@ -33,7 +33,7 @@ namespace CarCup
         [MenuItem("GameObject/Car Engine/UI/Mobile Controls", false, 2)]
         static void CreateNewMobileControls()
         {
-            GameObject controls = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Car Tool/Prefab/Mobile Controls.prefab");
+            GameObject controls = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Car Cup/Prefab/Mobile Controls.prefab");
 
             Transform canvas = GetCanvas();
             if (canvas != null)
@@ -49,7 +49,7 @@ namespace CarCup
         [MenuItem("GameObject/Car Engine/UI/Reset Button", false, 3)]
         static void CreateNewResetButton()
         {
-            GameObject button = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Car Tool/Prefab/Reset.prefab");
+            GameObject button = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Car Cup/Prefab/Reset.prefab");
 
             Transform canvas = GetCanvas();
             if (canvas != null)
@@ -65,7 +65,7 @@ namespace CarCup
         [MenuItem("GameObject/Car Engine/UI/Speed Text", false, 4)]
         static void CreateNewSpeedText()
         {
-            GameObject text = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Car Tool/Prefab/Speed.prefab");
+            GameObject text = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Car Cup/Prefab/Speed.prefab");
 
             Transform canvas = GetCanvas();
             if (canvas != null)

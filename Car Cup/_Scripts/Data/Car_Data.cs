@@ -7,6 +7,7 @@ namespace CarCup
     [CreateAssetMenu(fileName = "Car_Data", menuName = "Car Engine/Car Data", order = 1)]
     public class Car_Data : ScriptableObject
     {
+        //Controlling
         public float motorForce = 1200f;
         public float breakForce = 2000f;
         public float maxSteerAngle = 30f;
@@ -15,13 +16,18 @@ namespace CarCup
         public AnimationCurve acceleration = AnimationCurve.EaseInOut(0, 0, 1, 1);
         public float mass = 2000f;
 
+        //Wheel
         public WheelColliderSettings fl_wheelColliderSettings = new WheelColliderSettings();
         public WheelColliderSettings fr_wheelColliderSettings = new WheelColliderSettings();
         public WheelColliderSettings rl_wheelColliderSettings = new WheelColliderSettings();
         public WheelColliderSettings rr_wheelColliderSettings = new WheelColliderSettings();
 
+        //Componets
+        public MotorSuond motorSuond = new MotorSuond();
+
         public void ResetData()
         {
+            //Controlling
             motorForce = 1200f;
             breakForce = 2000f;
             maxSteerAngle = 30f;
@@ -30,10 +36,14 @@ namespace CarCup
             acceleration = AnimationCurve.EaseInOut(0, 0, 1, 1);
             mass = 2000f;
 
+            //Wheel
             fl_wheelColliderSettings = new WheelColliderSettings();
             fr_wheelColliderSettings = new WheelColliderSettings();
             rl_wheelColliderSettings = new WheelColliderSettings();
             rr_wheelColliderSettings = new WheelColliderSettings();
+
+            //Componets
+            motorSuond = new MotorSuond();
         }
     }
 }
