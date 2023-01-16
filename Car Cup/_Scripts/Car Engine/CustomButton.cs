@@ -7,9 +7,10 @@ using UnityEngine.UI;
 namespace CarCup
 {
     [RequireComponent(typeof(Image))]
-    public class CustomButton : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
+    public class CustomButton : MonoBehaviour, IPointerDownHandler, IPointerUpHandler,IPointerClickHandler
     {
         public bool pressured = false;
+        public int clickCount = 0;
         public CustomButtonType type = CustomButtonType.None;
 
         [Space]
@@ -17,6 +18,7 @@ namespace CarCup
 
         private Image _image;
         private Color startColor = Color.white;
+        private float clickTime = 0f;
 
         private void Awake()
         {
@@ -34,6 +36,17 @@ namespace CarCup
         {
             pressured = false;
             _image.color = startColor;
+        }
+
+        public void OnPointerClick(PointerEventData eventData)
+        {
+            clickCount++;
+            clickTime = Time.time;
+        }
+
+        private void Update()
+        {
+            if (clickTime + 0.5f < Time.time) clickCount = 0;
         }
     }
 }

@@ -5,6 +5,8 @@ using UnityEngine;
 
 namespace CarCup
 {
+    [RequireComponent(typeof(Rigidbody))]
+    [RequireComponent(typeof(InputManger))]
     public class CarController : MonoBehaviour
     {
         [SerializeField] private Car_Data _data;
@@ -52,15 +54,36 @@ namespace CarCup
         private float currentbreakForce;
         private bool isBreaking;
         private new Rigidbody rigidbody;
+        private InputManger inputManger;
         private float speed = 0f;
-
-        private CustomButton gas;
-        private CustomButton braeck;
-        private CustomButton leftArrow;
-        private CustomButton rightArrow;
-        private CustomButton handBrake;
-        private CustomButton reset;
         private CustomText speedText;
+
+        private CarStatus status 
+        {
+            get 
+            {
+                CarStatus _status = CarStatus.OnGround;
+
+                WheelHit hit;
+                if (!frontLeftWheelCollider.GetGroundHit(out hit)
+                    &&
+                    !frontRightWheelCollider.GetGroundHit(out hit)
+                    &&
+                    !rearLeftWheelCollider.GetGroundHit(out hit)
+                    &&
+                    !rearRightWheelCollider.GetGroundHit(out hit))
+                {
+                    if (Physics.Raycast(transform.position + transform.up, transform.up, 2))
+                        _status = CarStatus.UpsideDown;
+                    else
+                        _status = CarStatus.InAir;
+
+                    Debug.DrawRay(transform.position + transform.up, transform.up, Color.red, 0.5f);
+                }
+
+                return _status;
+            }
+        }
 
         private void ApplyData()
         {
@@ -114,35 +137,8 @@ namespace CarCup
         private void Start()
         {
             rigidbody = GetComponent<Rigidbody>();
-
+            inputManger = GetComponent<InputManger>();
             ApplyData();
-
-            CustomButton[] customButtons = GameObject.FindObjectsOfType<CustomButton>();
-            foreach (CustomButton customButton in customButtons)
-            {
-                switch (customButton.type)
-                {
-                    case CustomButtonType.Gas:
-                        gas = customButton;
-                        break;
-                    case CustomButtonType.Braeck:
-                        braeck = customButton;
-                        break;
-                    case CustomButtonType.LeftArrow:
-                        leftArrow = customButton;
-                        break;
-                    case CustomButtonType.RightArrow:
-                        rightArrow = customButton;
-                        break;
-                    case CustomButtonType.HandBrake:
-                        handBrake = customButton;
-                        break;
-                    case CustomButtonType.Reset:
-                        reset = customButton;
-                        break;
-                }
-            }
-
             speedText = GameObject.FindObjectOfType<CustomText>();
         }
 
@@ -181,32 +177,40 @@ namespace CarCup
 
         private void GetInput()
         {
-            if (leftArrow == null || rightArrow == null) horizontalInput = Input.GetAxis("Horizontal");
-            else horizontalInput = Mathf.Lerp(horizontalInput, (rightArrow.pressured) ? 1 : (leftArrow.pressured) ? -1 : 0, Time.fixedDeltaTime * 10);
-            if (gas == null || braeck == null) verticalInput = Input.GetAxis("Vertical");
-            else verticalInput = Mathf.Lerp(verticalInput, (gas.pressured) ? 1 : (braeck.pressured) ? -1 : 0, Time.fixedDeltaTime * 10);
-            if (handBrake == null) isBreaking = Input.GetKey(KeyCode.Space);
-            else isBreaking = handBrake.pressured;
+            horizontalInput = inputManger.horizontal;
+            verticalInput = inputManger.vertical;
 
-            if (Mathf.Abs(horizontalInput) < 0.05f) horizontalInput = 0f;
-            else if (horizontalInput > 0.95f) horizontalInput = 1f;
-            else if (horizontalInput < -0.95f) horizontalInput = -1f;
+            isBreaking = inputManger.breaking;
 
-            if (Mathf.Abs(verticalInput) < 0.05) verticalInput = 0f;
-            else if (verticalInput > 0.95f) verticalInput = 1f;
-            else if (verticalInput < -0.95f) verticalInput = -1f;
+            if (inputManger.GetRest() && status == CarStatus.UpsideDown) StartCoroutine(ResetCar());
 
-            if (reset != null && reset.pressured)
-            {
-                reset.pressured = false;
-                transform.Rotate(transform.forward, 180);
-                transform.Translate(transform.up);
-            }
+            if (inputManger.rotating360Deg && status == CarStatus.OnGround) StartCoroutine(Rotating360Deg());
+
+            if (verticalInput == 0 && horizontalInput == 0)
+                isBreaking = true;
 
             if (speedText != null)
                 speedText.UpdatText(speed.ToString("F2"));
+        }
 
-            if (verticalInput == 0 && horizontalInput == 0) isBreaking = true;
+        private IEnumerator ResetCar() 
+        {
+            Vector3 force = -transform.up - transform.right - transform.forward;
+            for (int i = 0; i < 5; i++)
+            {
+                rigidbody.AddTorque(force * Mathf.Pow(rigidbody.mass, 5));
+                yield return new WaitForEndOfFrame();
+            }
+        }
+
+        private IEnumerator Rotating360Deg()
+        {
+            Vector3 force = transform.up * inputManger.rotating360DegDir;
+            for (int i = 0; i < 5; i++)
+            {
+                rigidbody.AddTorque(force * Mathf.Pow(rigidbody.mass, 5));
+                yield return new WaitForEndOfFrame();
+            }
         }
 
         private void HandleMotor()
@@ -299,6 +303,15 @@ namespace CarCup
                 motorSuond.Play();
             }
             motorSuond.volume = Mathf.Lerp(motorSuond.volume, volume, Time.deltaTime);
+        }
+
+        private void OnDrawGizmos()
+        {
+            Gizmos.color = Color.magenta;
+
+            Vector3 force = -transform.up - transform.right - transform.forward;
+            force += transform.position;
+            Gizmos.DrawSphere(force, 0.5f);
         }
     }
 }
