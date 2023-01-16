@@ -95,6 +95,8 @@ namespace CarCup
             acceleration = _data.acceleration;
             rigidbody.mass = _data.mass;
 
+            rigidbody.centerOfMass = _data.centerOfMass;
+
             ApplyDataToWheelCollider(frontLeftWheelCollider, _data.fl_wheelColliderSettings);
             ApplyDataToWheelCollider(frontRightWheelCollider, _data.fr_wheelColliderSettings);
             ApplyDataToWheelCollider(rearLeftWheelCollider, _data.rl_wheelColliderSettings);
@@ -158,20 +160,20 @@ namespace CarCup
 
             float speedRatio = speed / maxSpeed;
 
-            HandlingWheelMovement(frontLeftWheelCollider, speedRatio, 1, 1);
-            HandlingWheelMovement(frontRightWheelCollider, speedRatio, 1, 1);
-            HandlingWheelMovement(rearLeftWheelCollider, speedRatio, 1, 1);
-            HandlingWheelMovement(rearRightWheelCollider, speedRatio, 1, 1);
+            HandlingWheelMovement(frontLeftWheelCollider, speedRatio, _data.fl_wheelColliderSettings.f_stiffness, _data.fl_wheelColliderSettings.s_stiffness);
+            HandlingWheelMovement(frontRightWheelCollider, speedRatio, _data.fr_wheelColliderSettings.f_stiffness, _data.fr_wheelColliderSettings.s_stiffness);
+            HandlingWheelMovement(rearLeftWheelCollider, speedRatio, _data.rl_wheelColliderSettings.f_stiffness, _data.rl_wheelColliderSettings.s_stiffness);
+            HandlingWheelMovement(rearRightWheelCollider, speedRatio, _data.rr_wheelColliderSettings.f_stiffness, _data.rr_wheelColliderSettings.s_stiffness);
         }
 
         private void HandlingWheelMovement(WheelCollider collider, float t, float forwardExtra = 0f, float sidewaysExtra = 0f)
         {
             WheelFrictionCurve forwardFriction = collider.forwardFriction;
-            forwardFriction.stiffness = handlingMovement.Evaluate(t) + forwardExtra;
+            forwardFriction.stiffness = handlingMovement.Evaluate(t) * forwardExtra + forwardExtra;
             collider.forwardFriction = forwardFriction;
 
             WheelFrictionCurve sidewaysFriction = collider.sidewaysFriction;
-            sidewaysFriction.stiffness = handlingMovement.Evaluate(t / 2) + sidewaysExtra;
+            sidewaysFriction.stiffness = handlingMovement.Evaluate(t) * sidewaysExtra + sidewaysExtra;
             collider.sidewaysFriction = sidewaysFriction;
         }
 

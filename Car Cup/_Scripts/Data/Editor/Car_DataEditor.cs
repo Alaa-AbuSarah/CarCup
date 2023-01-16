@@ -46,13 +46,17 @@ namespace CarCup
                     EditorGUILayout.Space();
 
                     _Data.mass = EditorGUILayout.Slider("Mass", _Data.mass, 500f, 5000f);
+                    _Data.centerOfMass = EditorGUILayout.Vector3Field("Center Of Mass", _Data.centerOfMass);
+
+                    EditorGUILayout.Space();
+
                     _Data.motorForce = EditorGUILayout.Slider("Motor Force", _Data.motorForce, 1000f, 5000f);
                     _Data.breakForce = EditorGUILayout.Slider("Break Force", _Data.breakForce, 1500f, 10000f);
                     _Data.maxSpeed = EditorGUILayout.Slider("Max Speed", _Data.maxSpeed, 0f, 500f);
 
                     Texture2D angleSteering = EditorHelper.GetTexture2DFromPath("Assets/Car Cup/Demo Assets/Icons/Steering.png");
                     Texture2D angleCursor = EditorHelper.GetTexture2DFromPath("Assets/Car Cup/Demo Assets/Icons/Angle Cursor.png");
-                    _Data.maxSteerAngle = EditorHelper.GuiAngle(new Rect(Screen.width / 2 - 40, 150, 128, 128), _Data.maxSteerAngle, 1f, 90f, angleSteering, angleCursor, "Max Steer Angle", true);
+                    _Data.maxSteerAngle = EditorHelper.GuiAngle(new Rect(Screen.width / 2 - 40, 200, 128, 128), _Data.maxSteerAngle, 1f, 90f, angleSteering, angleCursor, "Max Steer Angle", true);
 
                     EditorGUILayout.Space(170);
 

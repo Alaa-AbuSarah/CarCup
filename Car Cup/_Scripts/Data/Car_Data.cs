@@ -15,6 +15,7 @@ namespace CarCup
         public AnimationCurve handlingMovement = AnimationCurve.EaseInOut(0f, 0f, 1f, 1f);
         public AnimationCurve acceleration = AnimationCurve.EaseInOut(0, 0, 1, 1);
         public float mass = 2000f;
+        public Vector3 centerOfMass = new Vector3(0.1f, 0.5f, -0.1f);
 
         //Wheel
         public WheelColliderSettings fl_wheelColliderSettings = new WheelColliderSettings();
@@ -35,6 +36,7 @@ namespace CarCup
             handlingMovement = AnimationCurve.EaseInOut(0f, 0f, 1f, 1f);
             acceleration = AnimationCurve.EaseInOut(0, 0, 1, 1);
             mass = 2000f;
+            centerOfMass = new Vector3(0.1f, 0.5f, -0.1f);
 
             //Wheel
             fl_wheelColliderSettings = new WheelColliderSettings();
