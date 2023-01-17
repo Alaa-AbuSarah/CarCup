@@ -46,7 +46,7 @@ namespace CarCup
 
         private void Update()
         {
-            if (clickTime + 0.5f < Time.time) clickCount = 0;
+            if (clickTime + 0.25f < Time.time) clickCount = 0;
         }
     }
 }

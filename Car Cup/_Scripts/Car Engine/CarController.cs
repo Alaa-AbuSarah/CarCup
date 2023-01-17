@@ -11,15 +11,6 @@ namespace CarCup
     {
         [SerializeField] private Car_Data _data;
 
-        [Space(25)]
-
-        [Header("Componets")]
-        [Space]
-
-        [SerializeField] private AudioSource motorSuond;
-
-        [Space(25)]
-
         [Header("Wheels")]
         [Space]
 
@@ -58,9 +49,13 @@ namespace CarCup
         private float speed = 0f;
         private CustomText speedText;
 
-        private CarStatus status 
+        //Componets
+        private Transform componets;
+        private AudioSource motorSuond;
+
+        private CarStatus status
         {
-            get 
+            get
             {
                 CarStatus _status = CarStatus.OnGround;
 
@@ -101,6 +96,18 @@ namespace CarCup
             ApplyDataToWheelCollider(frontRightWheelCollider, _data.fr_wheelColliderSettings);
             ApplyDataToWheelCollider(rearLeftWheelCollider, _data.rl_wheelColliderSettings);
             ApplyDataToWheelCollider(rearRightWheelCollider, _data.rr_wheelColliderSettings);
+
+            //Componets
+            componets = new GameObject("Componets").transform;
+            componets.parent = transform;
+
+            if (_data.motorSuond.active)//Motor Suond
+            {
+                GameObject motorSuondGO = new GameObject("Motor Suond");
+                motorSuondGO.transform.parent = componets;
+                motorSuond = motorSuondGO.AddComponent<AudioSource>();
+                motorSuond.loop = true;
+            }
         }
 
         private void ApplyDataToWheelCollider(WheelCollider collider, WheelColliderSettings settings)
@@ -186,7 +193,6 @@ namespace CarCup
 
             if (inputManger.GetRest() && status == CarStatus.UpsideDown) StartCoroutine(ResetCar());
 
-            if (inputManger.rotating360Deg && status == CarStatus.OnGround) StartCoroutine(Rotating360Deg());
 
             if (verticalInput == 0 && horizontalInput == 0)
                 isBreaking = true;
@@ -195,19 +201,9 @@ namespace CarCup
                 speedText.UpdatText(speed.ToString("F2"));
         }
 
-        private IEnumerator ResetCar() 
+        private IEnumerator ResetCar()
         {
             Vector3 force = -transform.up - transform.right - transform.forward;
-            for (int i = 0; i < 5; i++)
-            {
-                rigidbody.AddTorque(force * Mathf.Pow(rigidbody.mass, 5));
-                yield return new WaitForEndOfFrame();
-            }
-        }
-
-        private IEnumerator Rotating360Deg()
-        {
-            Vector3 force = transform.up * inputManger.rotating360DegDir;
             for (int i = 0; i < 5; i++)
             {
                 rigidbody.AddTorque(force * Mathf.Pow(rigidbody.mass, 5));
@@ -268,6 +264,8 @@ namespace CarCup
         private void HandlingComponets()
         {
             if (_data.motorSuond.active) MotorSuond();
+
+            if (_data.rotating360Deg.active) Rotating360Deg();
         }
 
         private void MotorSuond()
@@ -305,6 +303,32 @@ namespace CarCup
                 motorSuond.Play();
             }
             motorSuond.volume = Mathf.Lerp(motorSuond.volume, volume, Time.deltaTime);
+        }
+
+        private void Rotating360Deg()
+        {
+            Vector3 force = Vector3.zero;
+
+            if (inputManger.rotating360Deg && status == CarStatus.OnGround)
+            {
+                if (_data.rotating360Deg.onGroundX) force.x = 1;
+                if (_data.rotating360Deg.onGroundY) force.y = 1;
+                if (_data.rotating360Deg.onGroundZ) force.z = 1;
+
+                force *= inputManger.rotating360DegDir;
+            }
+
+            if (status == CarStatus.InAir)
+            {
+                if (!Physics.Raycast(transform.position, -transform.up, _data.rotating360Deg.inAirDistance))
+                {
+                    if (_data.rotating360Deg.inAirX) force.x = 1;
+                    if (_data.rotating360Deg.inAirY) force.y = 1;
+                    if (_data.rotating360Deg.inAirZ) force.z = 1;
+                }
+            }
+
+            rigidbody.AddTorque(force * rigidbody.mass * rigidbody.mass);
         }
 
         private void OnDrawGizmos()

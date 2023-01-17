@@ -5,7 +5,7 @@ using UnityEngine;
 namespace CarCup
 {
     [System.Serializable]
-    public class MotorSuond
+    public class MotorSuondSettings
     {
         public bool active = false;
 

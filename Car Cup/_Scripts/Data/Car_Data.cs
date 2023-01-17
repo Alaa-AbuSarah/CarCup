@@ -24,7 +24,8 @@ namespace CarCup
         public WheelColliderSettings rr_wheelColliderSettings = new WheelColliderSettings();
 
         //Componets
-        public MotorSuond motorSuond = new MotorSuond();
+        public MotorSuondSettings motorSuond = new MotorSuondSettings();
+        public Rotating360DegSettings rotating360Deg = new Rotating360DegSettings();
 
         public void ResetData()
         {
@@ -45,7 +46,7 @@ namespace CarCup
             rr_wheelColliderSettings = new WheelColliderSettings();
 
             //Componets
-            motorSuond = new MotorSuond();
+            motorSuond = new MotorSuondSettings();
         }
     }
 }

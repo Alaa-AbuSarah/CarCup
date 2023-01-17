@@ -17,16 +17,13 @@ namespace CarCup
 
         private int WheelColliderSettingsFieldIndex = 0;
 
-        private bool componets = false;
-
         private void OnEnable() => _Data = target as Car_Data;
 
         public override void OnInspectorGUI()
         {
             GUILayout.BeginHorizontal();
-            if (GUILayout.Button("Controller"))
+            if (GUILayout.Button("Physics"))
             {
-                componets = false;
                 layoutIndex = 0;
             }
             if (GUILayout.Button("Componets"))
@@ -41,7 +38,7 @@ namespace CarCup
                 case 0://------Draw Controller UI----------------------------------------
                     EditorGUILayout.Space();
                     EditorHelper.GuiLine(2);
-                    EditorGUILayout.LabelField("Controller", EditorHelper.LableStyle0004(), GUILayout.ExpandWidth(true));
+                    EditorGUILayout.LabelField("Physics", EditorHelper.LableStyle0004(), GUILayout.ExpandWidth(true));
                     EditorHelper.GuiLine(2);
                     EditorGUILayout.Space();
 
@@ -102,27 +99,17 @@ namespace CarCup
                     EditorHelper.GuiLine(2);
                     EditorGUILayout.Space();
 
-                    if (_Data.motorSuond.active) _Data.motorSuond = EditorHelper.MotorSuondField(_Data.motorSuond, "Motor Suond");
+                    _Data.motorSuond = EditorHelper.MotorSuondSettingsField(_Data.motorSuond, "Motor Suond");
 
-                    EditorGUILayout.Space(15);
-                    if (GUILayout.Button("Components")) componets = !componets;
+                    EditorGUILayout.Space();
+                    EditorHelper.GuiLine(2);
+                    EditorGUILayout.Space();
 
-                    if (componets)
-                    {
-                        EditorGUILayout.Space();
+                     _Data.rotating360Deg = EditorHelper.Rotating360DegSettingsField(_Data.rotating360Deg, "Rotating 360Deg");
 
-                        if (GUILayout.Button("Motor Suond"))
-                        {
-                            if (_Data.motorSuond.active) _Data.motorSuond.ResetData();
-                            else _Data.motorSuond.active = true;
-
-                            componets = false;
-                        }
-                        if (GUILayout.Button("Soon")) Debug.Log("Soon");
-                        if (GUILayout.Button("Soon")) Debug.Log("Soon");
-                        if (GUILayout.Button("Soon")) Debug.Log("Soon");
-                    }
-
+                    EditorGUILayout.Space();
+                    EditorHelper.GuiLine(2);
+                    EditorGUILayout.Space();
                     break;//------------------------------------------------------------
             }
 
@@ -132,7 +119,6 @@ namespace CarCup
             {
                 layoutIndex = 0;
                 WheelColliderSettingsFieldIndex = 0;
-                componets = false;
                 _Data.ResetData();
             }
             EditorHelper.GuiLine(2);

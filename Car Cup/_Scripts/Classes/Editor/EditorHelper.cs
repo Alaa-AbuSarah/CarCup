@@ -172,12 +172,17 @@ namespace CarCup
 
             return _value;
         }
-        public static MotorSuond MotorSuondField(MotorSuond motorSuond, string label = " ")
+        public static MotorSuondSettings MotorSuondSettingsField(MotorSuondSettings settings, string label = " ")
         {
-            MotorSuond _suond = motorSuond;
+            MotorSuondSettings _suond = settings;
 
             GuiLine();
+            GUILayout.BeginHorizontal();
             EditorGUILayout.LabelField(label, LableStyle0005());
+            EditorGUILayout.Space();
+            _suond.active = EditorGUILayout.Toggle(_suond.active);
+            if (GUILayout.Button("Reset")) _suond.ResetData();
+            GUILayout.EndHorizontal();
             GuiLine();
 
             EditorGUILayout.BeginHorizontal();
@@ -211,6 +216,64 @@ namespace CarCup
             _suond.highVolume = EditorGUILayout.Slider(_suond.highVolume, 0, 1);
 
             return _suond;
+        }
+        public static Rotating360DegSettings Rotating360DegSettingsField(Rotating360DegSettings settings, string label = " ")
+        {
+            Rotating360DegSettings _rotating360Deg = settings;
+
+            GuiLine();
+            GUILayout.BeginHorizontal();
+            EditorGUILayout.LabelField(label, LableStyle0005());
+            EditorGUILayout.Space();
+            _rotating360Deg.active = EditorGUILayout.Toggle(_rotating360Deg.active);
+            if (GUILayout.Button("Reset")) _rotating360Deg.ResetData();
+            GUILayout.EndHorizontal();
+            GuiLine();
+
+            EditorGUILayout.Space();
+
+            GUILayout.BeginHorizontal();
+            EditorGUILayout.LabelField("On Ground", LableStyle0003());
+            EditorGUILayout.Space();
+            EditorGUILayout.LabelField("In Air", LableStyle0003());
+            GUILayout.EndHorizontal();
+
+            GUILayout.BeginHorizontal();
+            _rotating360Deg.onGroundX = EditorGUILayout.Toggle("X", _rotating360Deg.onGroundX);
+            EditorGUILayout.Space(25);
+            _rotating360Deg.inAirX = EditorGUILayout.Toggle("X", _rotating360Deg.inAirX);
+            GUILayout.EndHorizontal();
+
+            GUILayout.BeginHorizontal();
+            _rotating360Deg.onGroundY = EditorGUILayout.Toggle("Y", _rotating360Deg.onGroundY);
+            EditorGUILayout.Space(25);
+            _rotating360Deg.inAirY = EditorGUILayout.Toggle("Y", _rotating360Deg.inAirY);
+            GUILayout.EndHorizontal();
+
+            GUILayout.BeginHorizontal();
+            _rotating360Deg.onGroundZ = EditorGUILayout.Toggle("Z", _rotating360Deg.onGroundZ);
+            EditorGUILayout.Space(25);
+            _rotating360Deg.inAirZ = EditorGUILayout.Toggle("Z", _rotating360Deg.inAirZ);
+            GUILayout.EndHorizontal();
+
+            Rect rect = EditorGUILayout.GetControlRect();
+            rect.x += Screen.width / 2.41f;
+            rect.width -= Screen.width / 2.35f;
+            _rotating360Deg.inAirDistance = GUI.HorizontalSlider(rect, _rotating360Deg.inAirDistance, 2, 10);
+
+            rect = EditorGUILayout.GetControlRect();
+            rect.x += Screen.width / 2 - 15;
+            GUI.Label(rect, $"Distance: {_rotating360Deg.inAirDistance.ToString("F2")}");
+
+            return _rotating360Deg;
+        }
+
+        public static void LabelWithAngle(Rect rect, string label,float angle)
+        {
+            Matrix4x4 matrix = GUI.matrix;
+            GUIUtility.RotateAroundPivot(angle, rect.center);
+            GUI.Label(rect, label);
+            GUI.matrix = matrix;
         }
         public static GUIStyle LableStyle0001 => new GUIStyle(GUI.skin.label) { alignment = TextAnchor.MiddleCenter };
         public static GUIStyle LableStyle0002()
@@ -253,7 +316,7 @@ namespace CarCup
             lableStyle.normal.textColor = Color.white;
             lableStyle.fontStyle = FontStyle.Bold;
             lableStyle.fontSize = 12;
-            lableStyle.alignment = TextAnchor.UpperCenter;
+            lableStyle.alignment = TextAnchor.UpperRight;
 
             return lableStyle;
         }

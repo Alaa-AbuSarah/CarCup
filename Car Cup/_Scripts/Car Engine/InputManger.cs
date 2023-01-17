@@ -120,7 +120,7 @@ namespace CarCup
                     verticalClickCount--;
                 }
 
-                if (verticalClickTime + 0.5f < Time.time) verticalClickCount = 0;
+                if (verticalClickTime + 0.25f < Time.time) verticalClickCount = 0;
             }
             else
             {
