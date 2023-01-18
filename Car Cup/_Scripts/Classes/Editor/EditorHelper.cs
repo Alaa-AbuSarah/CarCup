@@ -84,11 +84,11 @@ namespace CarCup
             EditorGUILayout.LabelField("Suspension Spring", LableStyle0002());
             _settings.spring = EditorGUILayout.Slider("Spring", _settings.spring, 0f, 1000000f);
             _settings.damper = EditorGUILayout.Slider("Damper", _settings.damper, 0f, 1000000f);
-            _settings.targetPosition = EditorGUILayout.Slider("Target Position", _settings.targetPosition, 0f, 10f);
+            _settings.targetPosition = EditorGUILayout.Slider("Target Position", _settings.targetPosition, 0f, 1f);
 
             EditorGUILayout.Space();
             EditorGUILayout.LabelField("Forward Friction", LableStyle0002());
-            _settings.f_extremumSlip = EditorGUILayout.Slider("Fxtremum Slip", _settings.f_extremumSlip, 0.001f, 1000f);
+            _settings.f_extremumSlip = EditorGUILayout.Slider("Extremum Slip", _settings.f_extremumSlip, 0.001f, 1000f);
             _settings.f_extremumValue = EditorGUILayout.Slider("ExtremumValue", _settings.f_extremumValue, 0.001f, 1000f);
             _settings.f_asymptoteSlip = EditorGUILayout.Slider("AsymptoteSlip", _settings.f_asymptoteSlip, 0.001f, 1000f);
             _settings.f_asymptoteValue = EditorGUILayout.Slider("AsymptoteValue", _settings.f_asymptoteValue, 0.001f, 1000f);

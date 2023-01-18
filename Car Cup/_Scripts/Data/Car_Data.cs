@@ -4,6 +4,7 @@ using UnityEngine;
 
 namespace CarCup
 {
+    [System.Serializable]
     [CreateAssetMenu(fileName = "Car_Data", menuName = "Car Engine/Car Data", order = 1)]
     public class Car_Data : ScriptableObject
     {
@@ -15,7 +16,8 @@ namespace CarCup
         public AnimationCurve handlingMovement = AnimationCurve.EaseInOut(0f, 0f, 1f, 1f);
         public AnimationCurve acceleration = AnimationCurve.EaseInOut(0, 0, 1, 1);
         public float mass = 2000f;
-        public Vector3 centerOfMass = new Vector3(0.1f, 0.5f, -0.1f);
+        public bool overrideCenterOfMass = false;
+        public Vector3 centerOfMass = new Vector3(0.01f, 0.86f, 0.01f);
 
         //Wheel
         public WheelColliderSettings fl_wheelColliderSettings = new WheelColliderSettings();
@@ -37,7 +39,7 @@ namespace CarCup
             handlingMovement = AnimationCurve.EaseInOut(0f, 0f, 1f, 1f);
             acceleration = AnimationCurve.EaseInOut(0, 0, 1, 1);
             mass = 2000f;
-            centerOfMass = new Vector3(0.1f, 0.5f, -0.1f);
+            centerOfMass = new Vector3(0.01f, 0.86f, 0.01f);
 
             //Wheel
             fl_wheelColliderSettings = new WheelColliderSettings();

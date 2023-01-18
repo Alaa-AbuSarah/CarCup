@@ -90,7 +90,8 @@ namespace CarCup
             acceleration = _data.acceleration;
             rigidbody.mass = _data.mass;
 
-            rigidbody.centerOfMass = _data.centerOfMass;
+            if (_data.overrideCenterOfMass)
+                rigidbody.centerOfMass = _data.centerOfMass;
 
             ApplyDataToWheelCollider(frontLeftWheelCollider, _data.fl_wheelColliderSettings);
             ApplyDataToWheelCollider(frontRightWheelCollider, _data.fr_wheelColliderSettings);

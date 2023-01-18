@@ -35,7 +35,7 @@ namespace CarCup
 
             switch (layoutIndex)
             {
-                case 0://------Draw Controller UI----------------------------------------
+                case 0://------Draw Physics UI----------------------------------------
                     EditorGUILayout.Space();
                     EditorHelper.GuiLine(2);
                     EditorGUILayout.LabelField("Physics", EditorHelper.LableStyle0004(), GUILayout.ExpandWidth(true));
@@ -43,6 +43,12 @@ namespace CarCup
                     EditorGUILayout.Space();
 
                     _Data.mass = EditorGUILayout.Slider("Mass", _Data.mass, 500f, 5000f);
+
+                    Rect massRect = EditorGUILayout.GetControlRect(false);
+                    massRect.x += Screen.width / 5;
+                    massRect.y += 20;
+                    massRect.width = 25;
+                    _Data.overrideCenterOfMass = GUI.Toggle(massRect, _Data.overrideCenterOfMass, " ");
                     _Data.centerOfMass = EditorGUILayout.Vector3Field("Center Of Mass", _Data.centerOfMass);
 
                     EditorGUILayout.Space();
@@ -53,7 +59,7 @@ namespace CarCup
 
                     Texture2D angleSteering = EditorHelper.GetTexture2DFromPath("Assets/Car Cup/Demo Assets/Icons/Steering.png");
                     Texture2D angleCursor = EditorHelper.GetTexture2DFromPath("Assets/Car Cup/Demo Assets/Icons/Angle Cursor.png");
-                    _Data.maxSteerAngle = EditorHelper.GuiAngle(new Rect(Screen.width / 2 - 40, 200, 128, 128), _Data.maxSteerAngle, 1f, 90f, angleSteering, angleCursor, "Max Steer Angle", true);
+                    _Data.maxSteerAngle = EditorHelper.GuiAngle(new Rect(Screen.width / 2 - 40, 225, 128, 128), _Data.maxSteerAngle, 1f, 90f, angleSteering, angleCursor, "Max Steer Angle", true);
 
                     EditorGUILayout.Space(170);
 
