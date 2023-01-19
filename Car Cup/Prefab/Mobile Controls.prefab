@@ -90,6 +90,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pressured: 0
+  clickCount: 0
   type: 4
   color: {r: 1, g: 0, b: 0, a: 1}
 --- !u!1 &7577374378421687836
@@ -182,6 +183,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pressured: 0
+  clickCount: 0
   type: 1
   color: {r: 1, g: 0, b: 0, a: 1}
 --- !u!1 &7577374378501901828
@@ -274,6 +276,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pressured: 0
+  clickCount: 0
   type: 2
   color: {r: 1, g: 0, b: 0, a: 1}
 --- !u!1 &7577374378687648689
@@ -366,6 +369,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pressured: 0
+  clickCount: 0
   type: 3
   color: {r: 1, g: 0, b: 0, a: 1}
 --- !u!1 &7577374378689706016
@@ -499,5 +503,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pressured: 0
-  type: 5
+  clickCount: 0
+  type: 7
   color: {r: 1, g: 0, b: 0, a: 1}

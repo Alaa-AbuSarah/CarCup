@@ -11,7 +11,7 @@ namespace CarCup
         public bool breaking = false;
         public bool reset = false;
         public bool rotating360Deg = false;
-        public int rotating360DegDir { get => (verticalClickCount > 0) ? 1 : (verticalClickCount < 0) ? -1 : 0; private set { } }
+        public int rotating360DegDir;
 
         private CustomButton gasButton;
         private CustomButton braeckButton;
@@ -20,8 +20,7 @@ namespace CarCup
         private CustomButton handBrakeButton;
         private CustomButton resetButton;
 
-        private int verticalClickCount = 0;
-        private float verticalClickTime = 0f;
+        private float rotating360DegTimer = 0f;
 
         private void Start()
         {
@@ -101,34 +100,47 @@ namespace CarCup
             //------------------------------------------------------------------------
 
 
-            //----Calculating reset input------------------------------------------
-            if (gasButton == null || braeckButton == null)//No vertical buttons
+            //----Calculating rotating360Deg input------------------------------------------
+            if (leftArrowButton == null || rightArrowButton == null)
             {
-                bool rightbuttonsUp = Input.GetKeyUp(KeyCode.D) || Input.GetKeyUp(KeyCode.RightArrow);
-                bool rightbuttonsDown = Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.RightArrow);
-                bool leftbuttonsUp = Input.GetKeyUp(KeyCode.A) || Input.GetKeyUp(KeyCode.LeftArrow);
-                bool leftbuttonsDown = Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow);
-
-                if (rightbuttonsUp && !leftbuttonsDown)
+                if (Input.GetKeyDown(KeyCode.E))
                 {
-                    verticalClickTime = Time.time;
-                    verticalClickCount++;
+                    rotating360DegTimer = Time.time;
+                    rotating360Deg = true;
+                    rotating360DegDir = 1;
                 }
-                else if (leftbuttonsUp && !rightbuttonsDown)
+                else if (Input.GetKeyDown(KeyCode.Q))
                 {
-                    verticalClickTime = Time.time;
-                    verticalClickCount--;
+                    rotating360DegTimer = Time.time;
+                    rotating360Deg = true;
+                    rotating360DegDir = -1;
                 }
-
-                if (verticalClickTime + 0.25f < Time.time) verticalClickCount = 0;
+                else if (rotating360DegTimer + 0.25f < Time.time)
+                {
+                    rotating360Deg = false;
+                    rotating360DegDir = 0;
+                }
             }
             else
             {
-                if (rightArrowButton.pressured && !leftArrowButton.pressured) { verticalClickCount = rightArrowButton.clickCount; }
-                if (leftArrowButton.pressured && !rightArrowButton.pressured) { verticalClickCount = -leftArrowButton.clickCount; }
+                if (rightArrowButton.clickCount == 2)
+                {
+                    rotating360DegTimer = Time.time;
+                    rotating360Deg = true;
+                    rotating360DegDir = 1;
+                }
+                else if (leftArrowButton.clickCount == 2)
+                {
+                    rotating360DegTimer = Time.time;
+                    rotating360Deg = true;
+                    rotating360DegDir = -1;
+                }
+                else if (rotating360DegTimer + 0.25f < Time.time)
+                {
+                    rotating360Deg = false;
+                    rotating360DegDir = 0;
+                }
             }
-
-            rotating360Deg = (Mathf.Abs(verticalClickCount) == 2);
             //------------------------------------------------------------------------
         }
 
