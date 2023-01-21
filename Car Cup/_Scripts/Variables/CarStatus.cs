@@ -1,0 +1,1 @@
+namespace CarCup { enum CarStatus { OnGround, UpsideDown, InAir } }
